@@ -1389,6 +1389,11 @@ class Trainer:
             webhook_config = getattr(getattr(self, "config", None), "webhook_config", None)
         if webhook_config is None:
             return
+        
+        if isinstance(webhook_config, str):
+            with Path(webhook_config).open() as f:
+                webhook_config = json.load(f)
+        
         from simpletuner.helpers.webhooks.handler import WebhookHandler
 
         send_video_flag = self._infer_send_video_flag(raw_config)
